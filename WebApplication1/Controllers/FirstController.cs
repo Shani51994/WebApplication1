@@ -9,9 +9,12 @@ namespace WebApplication1.Controllers
     public class FirstController : Controller
     {
         // GET: First
-        public ActionResult Index()
+        public ActionResult Index(string ip, int port)
         {
+            ViewBag.ip = ip;
+            ViewBag.port = port;
             return View();
         }
+
     }
 }
