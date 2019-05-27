@@ -43,9 +43,12 @@
                 htmlCanvas.height = window.innerHeight;
                 image.onload = function () {
                     context.lineWidth = '5';
+                    context.strokeStyle = "navy";
                     context.drawImage(image, 0, 0, window.innerWidth, window.innerHeight);
                     context.beginPath();
-                    context.arc(95, 50, 40, 0, 2 * Math.PI);
+                    context.arc(95, 50, 7, 0, 2 * Math.PI);
+                    context.fillStyle = "red";
+                    context.fill()
                     context.stroke();
                 }
                 image.src = "/export-map-share.jpg";
