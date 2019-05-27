@@ -19,6 +19,9 @@ namespace WebApplication1.Controllers
             float lon = float.Parse(Command.Instance.send("get /position/longitude-deg"));
             float lat = float.Parse(Command.Instance.send("get /position/latitude-deg"));
 
+            ViewBag.lon = lon;
+            ViewBag.lat = lat;
+
             Console.WriteLine(lon);
             Console.WriteLine(lat);
 
