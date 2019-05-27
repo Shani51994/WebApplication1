@@ -17,8 +17,8 @@ namespace WebApplication1.Models
         private bool isConnected;
         private static Command instance = null;
         private NetworkStream networkStream;
-        private TcpListener server;
         private TcpClient client;
+        private StreamReader reader;
 
 
         public Command()
@@ -50,7 +50,8 @@ namespace WebApplication1.Models
         {
             IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ip), port);
             this.client = new TcpClient();
-            this.server = new TcpListener(endPoint);
+    
+            Console.WriteLine("connectToServer FUNC!");
 
             // connect to server
             while (!client.Connected)
@@ -65,43 +66,29 @@ namespace WebApplication1.Models
             }
 
             isConnected = true;
-            getFromServer();
-            //this.networkStream = client.GetStream();
+            this.networkStream = client.GetStream();
+            reader = new StreamReader(networkStream);
         }
 
-        /*
-         *sending commands from the auto pilot, after each command wait 2 sec for sending the next one
-         */
-        public void getFromServer()
+
+        public string send(string textUser)
         {
-            NetworkStream stream = this.client.GetStream();
-            BinaryReader reader = new BinaryReader(stream);
-            String[] splitInput;
-
-            while (!isConnected)
+            if (!isConnected)
             {
-                // read the input fron the simulator
-                string input = "";
-                char c;
-
-                // read data untill \n
-                while ((c = reader.ReadChar()) != '\n')
-                {
-                    input += c;
-                }
-
-                // splits the input
-                splitInput = input.Split(',');
-
-                // gets the lon and lat from the input and add them to the lon and lat in the instance
-                //  FlightBoardViewModel.Instance.Lon = float.Parse(splitInput[0]);
-                // FlightBoardViewModel.Instance.Lat = float.Parse(splitInput[1]);
-
-                Console.WriteLine(splitInput[0]);
-                Console.WriteLine(splitInput[1]);
-
+                return "not connected" ;
             }
+            
+            string totalCommands = textUser + "\r\n";
+            byte[] buffer = Encoding.ASCII.GetBytes(totalCommands);
+            networkStream.Write(buffer, 0, buffer.Length);
+            string returnData = reader.ReadLine();
+            //////////////////////////////////////////////////////////////// understand
+            string[] words = returnData.Split('\'');
+            return words[1];
         }
+
+
+    
         /*
          * close the connection to the client, and the server that are connected to him
          */
@@ -109,7 +96,6 @@ namespace WebApplication1.Models
         {
             this.isConnected = false;
             this.client.Close();
-            this.server.Stop();
         }
     }
 }

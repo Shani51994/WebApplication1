@@ -16,6 +16,13 @@ namespace WebApplication1.Controllers
             ViewBag.ip = ip;
             ViewBag.port = port;
             Command.Instance.connectToServer(ip, port);
+            float lon = float.Parse(Command.Instance.send("get /position/longitude-deg"));
+            float lat = float.Parse(Command.Instance.send("get /position/latitude-deg"));
+
+            Console.WriteLine(lon);
+            Console.WriteLine(lat);
+
+
             return View();
         }
 
