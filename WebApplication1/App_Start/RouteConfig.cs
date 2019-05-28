@@ -18,6 +18,13 @@ namespace WebApplication1
                 url: "Display/{ip}/{port}",
                 defaults: new { controller = "First", action = "Index"}
             );
+
+            routes.MapRoute(
+              name: "viewMapPath",
+              url: "Display/{ip}/{port}/{time}",
+              defaults: new { controller = "First", action = "viewMapPath" }
+          ); 
+
         }
     }
 }

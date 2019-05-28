@@ -82,13 +82,10 @@ namespace WebApplication1.Models
             byte[] buffer = Encoding.ASCII.GetBytes(totalCommands);
             networkStream.Write(buffer, 0, buffer.Length);
             string returnData = reader.ReadLine();
-            //////////////////////////////////////////////////////////////// understand
             string[] words = returnData.Split('\'');
             return words[1];
         }
-
-
-    
+   
         /*
          * close the connection to the client, and the server that are connected to him
          */
