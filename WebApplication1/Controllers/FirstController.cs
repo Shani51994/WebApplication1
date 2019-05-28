@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -27,7 +28,12 @@ namespace WebApplication1.Controllers
 
         public ActionResult viewMapPath(string ip, int port, int time)
         {
+
             Command.Instance.connectToServer(ip, port);
+            float lon = float.Parse(Command.Instance.send("get /position/longitude-deg"));
+            float lat = float.Parse(Command.Instance.send("get /position/latitude-deg"));
+            ViewBag.lon = lon;
+            ViewBag.lat = lat;
             Session["time"] = time;
             return View();
         }
@@ -45,8 +51,8 @@ namespace WebApplication1.Controllers
             writer.WriteStartElement("Location");
             Random rnd = new Random();
 
-            string lon = Command.Instance.send("get /position/longitude-deg") + rnd.Next(50);
-            string lat = Command.Instance.send("get /position/latitude-deg") + rnd.Next(50);
+            string lon = (float.Parse(Command.Instance.send("get /position/longitude-deg")) + rnd.Next(50)).ToString();
+            string lat = (float.Parse(Command.Instance.send("get /position/latitude-deg")) + rnd.Next(50)).ToString();
 
             writer.WriteElementString("Lon", lon);
             writer.WriteElementString("Lat", lat);
@@ -54,6 +60,8 @@ namespace WebApplication1.Controllers
             writer.WriteEndDocument();
             writer.Flush();
 
+            
+            Debug.WriteLine(sb.ToString());
             return sb.ToString();
 
 

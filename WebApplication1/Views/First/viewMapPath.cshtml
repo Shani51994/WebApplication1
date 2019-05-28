@@ -28,42 +28,56 @@
     <canvas id="canvas"></canvas>
 
     <script>
-       
+
         var IntervalTime = @Session["time"] * 1000
- 
+        var htmlCanvas = document.getElementById("canvas");
+        var context = htmlCanvas.getContext("2d");
+
+        (function () {
+            var image = new Image();
+
+            initialize();
+
+            function initialize() {
+                window.addEventListener('resize', resizeCanvas, false);
+                resizeCanvas();
+            }
+
+            function resizeCanvas() {
+                htmlCanvas.width = window.innerWidth;
+                htmlCanvas.height = window.innerHeight;
+                image.onload = function () {
+                    context.drawImage(image, 0, 0, window.innerWidth, window.innerHeight);
+                    circle(@ViewBag.lon, @ViewBag.lat, context);
+                    
+                }
+                image.src = "/export-map-share.png";
+            }
+        })();
+
+        oldLon = @ViewBag.lon;
+        oldLat =  @ViewBag.lat;
+
+        //allCircle = [];
         myTimer = (function () {
             $.post("@Url.Action("createXmlData")").done(function (xml) {
-                alert(xml);
+                var xmlDoc = $.parseXML(xml);
+                $xml = $(xmlDoc);
+                Lon = parseFloat($xml.find("Lon").text());
+                Lat = parseFloat($xml.find("Lat").text());
+                //var locationPair = { x: Lon, y: Lat };
+                //allCircle.push(locationPair);
+                circle(Lon, Lat, context);
+                //drawPath(@ViewBag.lon, @ViewBag.lat , allCircle, context);
 
-                var xmlDoc = $.parseXML(xml),
-                    $xml = $(xmlDoc);
-                    var Lon = $xml.find( "Lon" ).text();
-                    var Lat = $xml.find("Lat").text();
-
-                var htmlCanvas = document.getElementById("canvas");
-                var context = htmlCanvas.getContext("2d");
-                var image = new Image();
-
-                initialize();
-
-                function initialize() {
-                    window.addEventListener('resize', resizeCanvas, false);
-                }
-                    htmlCanvas.width = window.innerWidth;
-                    htmlCanvas.height = window.innerHeight;
-                    image.onload = function () {
-                        context.lineWidth = '5';
-                        context.strokeStyle = "navy";
-                        context.drawImage(image, 0, 0, window.innerWidth, window.innerHeight);
-                        context.beginPath();
-                        var lat = (Lat + 90) * (htmlCanvas.height / 180);
-                        var lon = (Lon + 180) * (htmlCanvas.width / 360);
-                        context.arc(lon, lat, 7, 0, 2 * Math.PI);
-                        context.fillStyle = "red";
-                        context.fill()
-                        context.stroke();
-                    }
-                    image.src = "/export-map-share.png";
+                context.moveTo(oldLon, oldLat);
+                context.lineTo(Lon, Lat);
+                //context.strokeStyle = 'red';
+                context.stroke();
+                oldLon = Lon;
+                oldLat = Lat;
+                
+                //context.beginPath();               
             });
          });
 
