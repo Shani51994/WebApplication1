@@ -25,6 +25,20 @@ namespace WebApplication1
               defaults: new { controller = "First", action = "viewMapPath"}
           );
 
+            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.MapRoute(
+              name: "save",
+              url: "save/{ip}/{port}/{time}/{seconds}/{fileName}",
+              defaults: new { controller = "First", action = "Save" }
+          );
+
+            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.MapRoute(
+              name: "PathByFile",
+              url: "display1/{fileName}/{time}",
+              defaults: new { controller = "First", action = "ViewFilePath" }
+          );
+
             routes.MapRoute(
              name: "Default",
              url: "{action}/{id}",
