@@ -30,13 +30,16 @@
     <canvas id="canvas"></canvas>
 
     <script>
-
         var IntervalTime = @Session["time"] * 1000
         var htmlCanvas = document.getElementById("canvas");
+        htmlCanvas.width = window.innerWidth;
+        htmlCanvas.height = window.innerHeight;
+
         var context = htmlCanvas.getContext("2d");
+        var oldLon = (@ViewBag.lon + 180) * (htmlCanvas.width / 360);
+        var oldLat = (@ViewBag.lat + 90) * (htmlCanvas.height / 180);
 
         (function () {
-
             initialize();
 
             function initialize() {
@@ -45,33 +48,14 @@
             }
 
             function resizeCanvas() {
-                htmlCanvas.width = window.innerWidth;
-                htmlCanvas.height = window.innerHeight;
-
-                var lon = (@ViewBag.lon + 180) * (htmlCanvas.width / 360);                
-                var lat = (@ViewBag.lat + 90) * (htmlCanvas.height / 180);
-               //drawCircle(lon, lat, context);
-                
-                context.lineWidth = '5';
-                context.strokeStyle = "navy";
-                context.beginPath();
-                context.arc(lon, lat, 7, 0, 2 * Math.PI);
-                context.fillStyle = "red";
-                context.fill();
-                context.stroke();
-            
+                circle(oldLon, oldLat, context);
             }
+
         })();
-
-
 
         allCircle = [];
         
-            var oldLon = (@ViewBag.lon + 180) * (htmlCanvas.width / 360);
-            var oldLat = (@ViewBag.lat + 90) * (htmlCanvas.height / 180);
         myTimer = (function () {
-            var Lon;
-            var Lat;
             $.post("@Url.Action("createXmlData")").done(function (xml) {
                 var xmlDoc = $.parseXML(xml);
                 $xml = $(xmlDoc);
@@ -79,18 +63,7 @@
                 Lat = ((parseFloat($xml.find("Lat").text())) + 90) * (htmlCanvas.height / 180);
                var locationPair = { x: Lon, y: Lat };
                 allCircle.push(locationPair);
-                
-                //context.beginPath();
-                //context.beginPath();
-                //context.moveTo(oldLon, oldLat);
-                //context.lineTo(Lon, Lat);
-                //context.strokeStyle = 'red';
-                //context.stroke();
-                //oldLon = Lon;
-                //oldLat = Lat;
-                            drawPath(oldLon, oldLat, allCircle, context);
-
-               
+                drawPath(oldLon, oldLat, allCircle, context); 
             });
         
          });

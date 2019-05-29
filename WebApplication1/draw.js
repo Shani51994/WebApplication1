@@ -1,10 +1,8 @@
-﻿function drawCircle(lon, lat, myCanvas) {
-    myCanvas.lineWidth = '5';
+﻿function circle(lon, lat, myCanvas) {
+    myCanvas.lineWidth = '3';
     myCanvas.strokeStyle = "navy";
     myCanvas.beginPath();
-    var lat = (latitude + 90) * (htmlCanvas.height / 180);
-    var lon = (lontitude + 180) * (htmlCanvas.width / 360);
-    myCanvas.arc(lon, lat, 7, 0, 2 * Math.PI);
+    myCanvas.arc(lon, lat, 5, 0, 2 * Math.PI);
     myCanvas.fillStyle = "red";
     myCanvas.fill();
     myCanvas.stroke();
