@@ -56,15 +56,12 @@
         allCircle = [];
 
         myTimer = (function () {
-            $.post("@Url.Action("getValues")").done(function (xml) {
-                var xmlDoc = $.parseXML(xml);
-                $xml = $(xmlDoc);
-                Lon = ((parseFloat($xml.find("Lon").text())) + 180) * (htmlCanvas.width / 360);
-                Lat = ((parseFloat($xml.find("Lat").text())) + 90) * (htmlCanvas.height / 180);
+            $.post("@Url.Action("getValues")") {
+                Lon = ((parseFloat(@ViewBag.lon) + 180) * (htmlCanvas.width / 360);
+                Lat = ((parseFloat(@ViewBag.lat) + 90) * (htmlCanvas.height / 180);
+                Rudder = @ViewBag.rudder;
+                Throttle = @ViewBag.throttle;
 
-                //***************************
-                //Rudder = $xml.find("Rudder").text();
-                //Throttle = $xml.find("Throttle").text();
                 var locationPair = { x: Lon, y: Lat };
                 allCircle.push(locationPair);
                 drawPath(oldLon, oldLat, allCircle, context);

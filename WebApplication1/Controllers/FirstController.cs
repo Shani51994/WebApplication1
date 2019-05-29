@@ -157,15 +157,7 @@ namespace WebApplication1.Controllers
                 }
             }
 
-            
-
-            Session["time"] = time;
-            Session["fileName"] = fileName;
-            return View();
-        }
-        public void getValues()
-        {
-
+            // get first values
             string line = lines[lineCounter];
             string[] splitLine = line.Split(',');
 
@@ -176,6 +168,21 @@ namespace WebApplication1.Controllers
 
             lineCounter++;
 
+            Session["time"] = time;
+            Session["fileName"] = fileName;
+            return View();
+        }
+        public void getValues()
+        {
+            string line = lines[lineCounter];
+            string[] splitLine = line.Split(',');
+
+            ViewBag.lon = splitLine[0];
+            ViewBag.lat = splitLine[1];
+            ViewBag.rudder = splitLine[2];
+            ViewBag.throttle = splitLine[3];
+
+            lineCounter++;
         }
     }
 }
