@@ -9,9 +9,11 @@
     <style>
         html
         body {
-            width: 100%;
-            height: 100%;
-            margin: 0;
+            background-image: url('/export-map-share.png');
+            background-size: 100% 100%;
+            background-position: center center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
         }
 
         canvas {
@@ -34,7 +36,6 @@
         var context = htmlCanvas.getContext("2d");
 
         (function () {
-            var image = new Image();
 
             initialize();
 
@@ -46,40 +47,52 @@
             function resizeCanvas() {
                 htmlCanvas.width = window.innerWidth;
                 htmlCanvas.height = window.innerHeight;
-                image.onload = function () {
-                    context.drawImage(image, 0, 0, window.innerWidth, window.innerHeight);
-                    circle(@ViewBag.lon, @ViewBag.lat, context);
-                    
-                }
-                image.src = "/export-map-share.png";
+
+                var lon = (@ViewBag.lon + 180) * (htmlCanvas.width / 360);                
+                var lat = (@ViewBag.lat + 90) * (htmlCanvas.height / 180);
+               //drawCircle(lon, lat, context);
+                
+                context.lineWidth = '5';
+                context.strokeStyle = "navy";
+                context.beginPath();
+                context.arc(lon, lat, 7, 0, 2 * Math.PI);
+                context.fillStyle = "red";
+                context.fill();
+                context.stroke();
+            
             }
         })();
 
-       
-        //allCircle = [];
-        myTimer = (function () {
-             oldLon = @ViewBag.lon;
-             oldLat =  @ViewBag.lat;
 
+
+        allCircle = [];
+        
+            var oldLon = (@ViewBag.lon + 180) * (htmlCanvas.width / 360);
+            var oldLat = (@ViewBag.lat + 90) * (htmlCanvas.height / 180);
+        myTimer = (function () {
+            var Lon;
+            var Lat;
             $.post("@Url.Action("createXmlData")").done(function (xml) {
                 var xmlDoc = $.parseXML(xml);
                 $xml = $(xmlDoc);
-                Lon = parseFloat($xml.find("Lon").text());
-                Lat = parseFloat($xml.find("Lat").text());
-                //var locationPair = { x: Lon, y: Lat };
-                //allCircle.push(locationPair);
-                circle(Lon, Lat, context);
-                //drawPath(@ViewBag.lon, @ViewBag.lat , allCircle, context);
-
-                context.moveTo(oldLon, oldLat);
-                context.lineTo(Lon, Lat);
-                //context.strokeStyle = 'red';
-                context.stroke();
-                oldLon = Lon;
-                oldLat = Lat;
+                Lon = ((parseFloat($xml.find("Lon").text())) + 180) * (htmlCanvas.width / 360);
+                Lat = ((parseFloat($xml.find("Lat").text())) + 90) * (htmlCanvas.height / 180);
+               var locationPair = { x: Lon, y: Lat };
+                allCircle.push(locationPair);
                 
-                //context.beginPath();               
+                //context.beginPath();
+                //context.beginPath();
+                //context.moveTo(oldLon, oldLat);
+                //context.lineTo(Lon, Lat);
+                //context.strokeStyle = 'red';
+                //context.stroke();
+                //oldLon = Lon;
+                //oldLat = Lat;
+                            drawPath(oldLon, oldLat, allCircle, context);
+
+               
             });
+        
          });
 
         setInterval(myTimer, IntervalTime);
