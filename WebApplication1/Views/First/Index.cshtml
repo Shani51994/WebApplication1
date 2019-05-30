@@ -29,15 +29,20 @@
 
     <canvas id="canvas"></canvas>
     <script>
+        window.onbeforeunload = function () {
+            $.post("@Url.Action("CloseConnection")");
+        };
+
         (function () {
 
             var htmlCanvas = document.getElementById("canvas");
             htmlCanvas.width = window.innerWidth;
             htmlCanvas.height = window.innerHeight;
+          
+            var Lon = (@ViewBag.lon + 180) * (htmlCanvas.width / 360);
+            var Lat = (@ViewBag.lat - 90) * (htmlCanvas.height / -180);
 
             var context = htmlCanvas.getContext("2d");
-            var Lon = (@ViewBag.lon + 180) * (htmlCanvas.width / 360);
-            var Lat = (@ViewBag.lat + 90) * (htmlCanvas.height / 180);
 
         (function () {
             initialize();
@@ -52,11 +57,9 @@
             }
 
             })();
-
         })();
       
     </script>
-
 
 </body>
 </html>

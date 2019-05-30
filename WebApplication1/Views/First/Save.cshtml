@@ -30,29 +30,17 @@
     <canvas id="canvas"></canvas>
 
     <script>
+
+        window.onbeforeunload = function () {
+            $.post("@Url.Action("CloseConnection")");
+        };
+
         var IntervalTime = @Session["time"] * 1000
         var htmlCanvas = document.getElementById("canvas");
         htmlCanvas.width = window.innerWidth;
         htmlCanvas.height = window.innerHeight;
-
         var context = htmlCanvas.getContext("2d");
-        var oldLon = (@ViewBag.lon + 180) * (htmlCanvas.width / 360);
-        var oldLat = (@ViewBag.lat + 90) * (htmlCanvas.height / 180);
-
-        (function () {
-            initialize();
-
-            function initialize() {
-                window.addEventListener('resize', resizeCanvas, false);
-                resizeCanvas();
-            }
-
-            function resizeCanvas() {
-                circle(oldLon, oldLat, context);
-            }
-
-        })();
-
+        
         allCircle = [];
 
         myTimer = (function () {
@@ -60,19 +48,22 @@
                 var xmlDoc = $.parseXML(xml);
                 $xml = $(xmlDoc);
                 Lon = ((parseFloat($xml.find("Lon").text())) + 180) * (htmlCanvas.width / 360);
-                Lat = ((parseFloat($xml.find("Lat").text())) + 90) * (htmlCanvas.height / 180);
-
-                //***************************
-                //Rudder = $xml.find("Rudder").text();
-                //Throttle = $xml.find("Throttle").text();
+                Lat = ((parseFloat($xml.find("Lat").text())) - 90) * (htmlCanvas.height / -180);
                 var locationPair = { x: Lon, y: Lat };
                 allCircle.push(locationPair);
-                drawPath(oldLon, oldLat, allCircle, context);
+                drawPath(allCircle, context);
             });
+        });
 
-         });
 
-        setInterval(myTimer, IntervalTime);
+        stop = (function () {
+            clearInterval(interval)
+            alert("Done!");
+
+        });
+
+        setTimeout(stop, (@Session["seconds"] * 1000));
+        var interval = setInterval(myTimer, IntervalTime);
         myTimer();
 
     </script>

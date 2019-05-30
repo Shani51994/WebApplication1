@@ -8,15 +8,19 @@ using System.Web;
 using System.Web.Mvc;
 using System.Xml;
 using WebApplication1.Models;
+using System.Net;
 
 namespace WebApplication1.Controllers
 {
     public class FirstController : Controller
     {
-
-        // GET: First
-        public ActionResult Index(string ip, int port)
+        public ActionResult Welcome()
         {
+            return View(); 
+        }
+
+            // GET: First
+            public ActionResult Index(string ip, int port) {
             Command.Instance.connectToServer(ip, port);
             float lon = float.Parse(Command.Instance.send("get /position/longitude-deg"));
             float lat = float.Parse(Command.Instance.send("get /position/latitude-deg"));
@@ -24,25 +28,20 @@ namespace WebApplication1.Controllers
             ViewBag.lon = lon;
             ViewBag.lat = lat;
             
-            return View();
+            return View("Index");
         }
 
         public ActionResult viewMapPath(string ip, int port, int time)
         {
 
             Command.Instance.connectToServer(ip, port);
-            float lon = float.Parse(Command.Instance.send("get /position/longitude-deg"));
-            float lat = float.Parse(Command.Instance.send("get /position/latitude-deg"));
-            ViewBag.lon = lon;
-            ViewBag.lat = lat;
             Session["time"] = time;
             return View();
         }
 
 
         [HttpPost]
-        public string createXmlData()
-        {
+        public string createXmlData() {
             //Initiate XML stuff
             StringBuilder sb = new StringBuilder();
             XmlWriterSettings settings = new XmlWriterSettings();
@@ -62,23 +61,18 @@ namespace WebApplication1.Controllers
             writer.Flush();
 
             return sb.ToString();
-
-
-        }
+           }
 
         public ActionResult Save(string ip, int port, int time, int seconds, string fileName)
         {
             Command.Instance.connectToServer(ip, port);
-            float lon = float.Parse(Command.Instance.send("get /position/longitude-deg"));
-            float lat = float.Parse(Command.Instance.send("get /position/latitude-deg"));
-            ViewBag.lon = lon;
-            ViewBag.lat = lat;
-            //ViewBag.fileName = fileName;
             Session["time"] = time;
+            Session["seconds"] = seconds;
             Session["fileName"] = fileName;
             return View();
         }
 
+        static bool isFirstWrite;
 
         [HttpPost]
         public string saveToFile()
@@ -87,22 +81,21 @@ namespace WebApplication1.Controllers
             
             try
             {
-                //string fileName = @"C:\Users\Home\source\repos\Shani51994\WebApplication1\WebApplication1\" + Session["fileName"].ToString() + ".txt";
                 string fileName = AppDomain.CurrentDomain.BaseDirectory + @"\" + Session["fileName"].ToString() + ".txt";
                 Random rnd = new Random();
                 string lon = (float.Parse(Command.Instance.send("get /position/longitude-deg")) + rnd.Next(50)).ToString();
                 string lat = (float.Parse(Command.Instance.send("get /position/latitude-deg")) + rnd.Next(50)).ToString();
                 string rudder = (float.Parse(Command.Instance.send("get /controls/flight/rudder")) + rnd.Next(50)).ToString();
                 string throttle = (float.Parse(Command.Instance.send("get /controls/engines/current-engine/throttle")) + rnd.Next(50)).ToString();
-
-
-                // checks if file isn't exist
-                if (!System.IO.File.Exists(fileName))
+               
+                if(System.IO.File.Exists(fileName) && isFirstWrite)
                 {
-                    // creates a new file
-                    using (FileStream fs = System.IO.File.Create(fileName))
-                    {
-                    }
+                    System.IO.File.Delete(fileName);
+                }
+
+                if (isFirstWrite)
+                {
+                    isFirstWrite = false;
                 }
 
                 // write data to the file
@@ -157,32 +150,58 @@ namespace WebApplication1.Controllers
                 }
             }
 
-            // get first values
-            string line = lines[lineCounter];
-            string[] splitLine = line.Split(',');
-
-            ViewBag.lon = splitLine[0];
-            ViewBag.lat = splitLine[1];
-            ViewBag.rudder = splitLine[2];
-            ViewBag.throttle = splitLine[3];
-
-            lineCounter++;
-
             Session["time"] = time;
             Session["fileName"] = fileName;
-            return View();
+            return View("ViewFilePath");
         }
-        public void getValues()
+
+        public string getValuesFromXML()
         {
+            if (lineCounter == lines.Count)
+            {
+                return "nothing";
+            }
+
             string line = lines[lineCounter];
             string[] splitLine = line.Split(',');
 
-            ViewBag.lon = splitLine[0];
-            ViewBag.lat = splitLine[1];
-            ViewBag.rudder = splitLine[2];
-            ViewBag.throttle = splitLine[3];
+            //Initiate XML stuff
+            StringBuilder sb = new StringBuilder();
+            XmlWriterSettings settings = new XmlWriterSettings();
+            XmlWriter writer = XmlWriter.Create(sb, settings);
+
+            writer.WriteStartDocument();
+            writer.WriteStartElement("Data");
+
+            writer.WriteElementString("Lon", splitLine[0]);
+            writer.WriteElementString("Lat", splitLine[1]);
+            writer.WriteElementString("Rudder", splitLine[2]);
+            writer.WriteElementString("Throttle", splitLine[3]);
+            writer.WriteEndElement();
+            writer.WriteEndDocument();
+            writer.Flush();
 
             lineCounter++;
+
+            return sb.ToString();
+        }
+
+        public ActionResult Display(string stringToCheck, int number)
+        {
+            try
+            {
+                IPAddress.Parse(stringToCheck);
+                return Index(stringToCheck, number);
+            } catch
+            {
+                return ViewFilePath(stringToCheck, number);
+            }
+        }
+
+        public void CloseConnection()
+        {
+            Command.Instance.closeClient();
+            isFirstWrite = true;
         }
     }
 }

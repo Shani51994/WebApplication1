@@ -13,16 +13,9 @@ namespace WebApplication1
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapRoute(
-                name: "Display",
-                url: "Display/{ip}/{port}",
-                defaults: new { controller = "First", action = "Index"}
-            );
-
-            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-            routes.MapRoute(
               name: "MapPath",
-              url: "Display/{ip}/{port}/{time}",
-              defaults: new { controller = "First", action = "viewMapPath"}
+              url: "display/{ip}/{port}/{time}",
+              defaults: new { controller = "First", action = "viewMapPath" }
           );
 
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
@@ -31,18 +24,19 @@ namespace WebApplication1
               url: "save/{ip}/{port}/{time}/{seconds}/{fileName}",
               defaults: new { controller = "First", action = "Save" }
           );
+            
 
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapRoute(
-              name: "PathByFile",
-              url: "display1/{fileName}/{time}",
-              defaults: new { controller = "First", action = "ViewFilePath" }
+              name: "Display",
+              url: "display/{stringToCheck}/{number}",
+              defaults: new { controller = "First", action = "Display" }
           );
 
             routes.MapRoute(
              name: "Default",
              url: "{action}/{id}",
-             defaults: new { controller = "First", action = "maayan", id= UrlParameter.Optional }
+             defaults: new { controller = "First", action = "Welcome", id= UrlParameter.Optional }
          );
         }
     }
