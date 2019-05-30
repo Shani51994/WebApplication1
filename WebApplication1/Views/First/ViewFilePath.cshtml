@@ -46,7 +46,6 @@
               $.post("@Url.Action("getValuesFromXML")").done(function (xml) {
                   if (xml == "nothing") {
                       alert("done!");
-                      //emptyArray(allCircle);
                       clearInterval(interval);
                   }
                   var xmlDoc = $.parseXML(xml);

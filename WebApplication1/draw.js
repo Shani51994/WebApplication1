@@ -19,9 +19,3 @@ function drawPath(allLocations, myCanvas) {
         myCanvas.stroke();
     }
 }
-
-function emptyArray(allLocations) {
-    while (allLocations.length > 0) {
-        allLocations.pop();
-    }
-}
