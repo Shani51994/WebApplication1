@@ -72,7 +72,7 @@ namespace WebApplication1.Controllers
             return View();
         }
 
-        static bool isFirstWrite;
+        static bool isFirstWrite = true;
 
         [HttpPost]
         public string saveToFile()
@@ -202,6 +202,7 @@ namespace WebApplication1.Controllers
         {
             Command.Instance.closeClient();
             isFirstWrite = true;
+            lines = new List<string>();
         }
     }
 }

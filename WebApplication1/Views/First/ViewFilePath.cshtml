@@ -39,12 +39,14 @@
         htmlCanvas.width = window.innerWidth;
         htmlCanvas.height = window.innerHeight;
         var context = htmlCanvas.getContext("2d");
- 
-        allCircle = [];
+
+        var allCircle = new Array();
+       
           myTimer = (function () {
               $.post("@Url.Action("getValuesFromXML")").done(function (xml) {
                   if (xml == "nothing") {
                       alert("done!");
+                      //emptyArray(allCircle);
                       clearInterval(interval);
                   }
                   var xmlDoc = $.parseXML(xml);
@@ -56,8 +58,11 @@
 
                   var locationPair = { x: Lon, y: Lat };
                   allCircle.push(locationPair);
-                  drawPath(allCircle, context, window.innerWidth, window.innerHeight); 
-           });  
+
+                  drawPath(allCircle, context, window.innerWidth, window.innerHeight);
+
+
+              });  
          });
 
         var interval = setInterval(myTimer, IntervalTime);
