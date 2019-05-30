@@ -19,8 +19,8 @@ namespace WebApplication1.Controllers
             return View(); 
         }
 
-            // GET: First
-            public ActionResult Index(string ip, int port) {
+        // GET: First
+        public ActionResult Index(string ip, int port) {
             Command.Instance.connectToServer(ip, port);
             float lon = float.Parse(Command.Instance.send("get /position/longitude-deg"));
             float lat = float.Parse(Command.Instance.send("get /position/latitude-deg"));
@@ -161,9 +161,6 @@ namespace WebApplication1.Controllers
             {
                 return "nothing";
             }
-
-
-
 
             string line = lines[lineCounter];
             string[] splitLine = line.Split(',');

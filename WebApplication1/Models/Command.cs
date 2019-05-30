@@ -51,8 +51,6 @@ namespace WebApplication1.Models
             IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ip), port);
             this.client = new TcpClient();
     
-            Console.WriteLine("connectToServer FUNC!");
-
             // connect to server
             while (!client.Connected)
             {
