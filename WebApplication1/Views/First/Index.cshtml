@@ -29,21 +29,26 @@
 
     <canvas id="canvas"></canvas>
     <script>
+
+        // close the connection when the move between pages
         window.onbeforeunload = function () {
             $.post("@Url.Action("CloseConnection")");
         };
 
         (function () {
 
+            // the canvas of the window and his context
             var htmlCanvas = document.getElementById("canvas");
             htmlCanvas.width = window.innerWidth;
             htmlCanvas.height = window.innerHeight;
-          
+            var context = htmlCanvas.getContext("2d");
+
+            // get lon and lat values from the view bag and normalize them
             var Lon = (@ViewBag.lon + 180) * (htmlCanvas.width / 360);
             var Lat = (@ViewBag.lat - 90) * (htmlCanvas.height / -180);
 
-            var context = htmlCanvas.getContext("2d");
 
+            // draw  the circle on the canvas
         (function () {
             initialize();
 

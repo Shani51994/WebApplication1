@@ -75,7 +75,6 @@ namespace WebApplication1.Models
             {
                 return "not connected" ;
             }
-            
             string totalCommands = textUser + "\r\n";
             byte[] buffer = Encoding.ASCII.GetBytes(totalCommands);
             networkStream.Write(buffer, 0, buffer.Length);

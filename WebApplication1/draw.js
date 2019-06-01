@@ -1,4 +1,7 @@
-﻿function circle(lon, lat, myCanvas) {
+﻿/*
+ * draw the circle on the canvs in the point(lon, lat)
+ */
+function circle(lon, lat, myCanvas) {
     myCanvas.lineWidth = '3';
     myCanvas.strokeStyle = "navy";
     myCanvas.beginPath();
@@ -9,6 +12,9 @@
 }
 
 
+/*
+ * the function get all points in the path, draw the first point and then the lines between the others 
+ */
 function drawPath(allLocations, myCanvas) {
     circle(allLocations[0].x, allLocations[0].y, myCanvas);
     myCanvas.beginPath();

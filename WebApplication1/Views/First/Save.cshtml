@@ -7,7 +7,6 @@
 <html>
 <head>
     <style>
-        html
         body {
             background-image: url('/export-map-share.png');
             background-size: 100% 100%;
@@ -31,36 +30,44 @@
 
     <script>
 
+        // close the connection when the move between pages
         window.onbeforeunload = function () {
             $.post("@Url.Action("CloseConnection")");
         };
 
-        var IntervalTime = @Session["time"] * 1000
+        // the canvas of the window and his context
         var htmlCanvas = document.getElementById("canvas");
         htmlCanvas.width = window.innerWidth;
         htmlCanvas.height = window.innerHeight;
         var context = htmlCanvas.getContext("2d");
-        
+
+        var IntervalTime = @Session["time"] * 1000
         allCircle = [];
 
+        // call getValuesFromXML and pass the return value to done function
         myTimer = (function () {
             $.post("@Url.Action("saveToFile")").done(function (xml) {
                 var xmlDoc = $.parseXML(xml);
                 $xml = $(xmlDoc);
+                // search lon and lat values in XML and normalizes them
                 Lon = ((parseFloat($xml.find("Lon").text())) + 180) * (htmlCanvas.width / 360);
                 Lat = ((parseFloat($xml.find("Lat").text())) - 90) * (htmlCanvas.height / -180);
+                // enter the new circle to the array
                 var locationPair = { x: Lon, y: Lat };
                 allCircle.push(locationPair);
+                // send the array to draw the path
                 drawPath(allCircle, context);
             });
         });
 
 
+        // when time that was decided up, we stop to get information by clear the interval
         stop = (function () {
             clearInterval(interval);
         });
 
         setTimeout(stop, (@Session["seconds"] * 1000));
+        // set the time interval for the function to call my timer again
         var interval = setInterval(myTimer, IntervalTime);
         myTimer();
 

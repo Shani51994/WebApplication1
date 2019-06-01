@@ -28,8 +28,9 @@
 </head>
 <body>
     <canvas id="canvas"></canvas>
-
     <script>
+    
+        // close the connection when the move between pages
         window.onbeforeunload = function () {
             $.post("@Url.Action("CloseConnection")");
         };
@@ -40,30 +41,35 @@
         htmlCanvas.height = window.innerHeight;
         var context = htmlCanvas.getContext("2d");
 
-        var allCircle = new Array();
-       
+        var allCircle = [];
+
+        // call getValuesFromXML and pass the return value to done function 
           myTimer = (function () {
               $.post("@Url.Action("getValuesFromXML")").done(function (xml) {
+                  // when return value of the func is 'nothing' maens that we finished reading the file and alret 'done'
                   if (xml == "nothing") {
                       alert("done!");
                       clearInterval(interval);
                   }
                   var xmlDoc = $.parseXML(xml);
                   $xml = $(xmlDoc);
+                  // search lon and lat values in XML and normalizes them
                   Lon = ((parseFloat($xml.find("Lon").text())) + 180) * (htmlCanvas.width / 360);
                   Lat = ((parseFloat($xml.find("Lat").text())) - 90) * (htmlCanvas.height / -180);
                   Rudder = parseFloat($xml.find("Rudder").text());
                   Throttle = parseFloat($xml.find("Throttle").text());
-
+                  // enter the new circle to the array
                   var locationPair = { x: Lon, y: Lat };
                   allCircle.push(locationPair);
-
-                  drawPath(allCircle, context, window.innerWidth, window.innerHeight);
+                  // send the array to draw the path
+                  drawPath(allCircle, context);
 
 
               });  
          });
 
+
+        // set the time interval for the function to call my timer again
         var interval = setInterval(myTimer, IntervalTime);
         myTimer();
 
