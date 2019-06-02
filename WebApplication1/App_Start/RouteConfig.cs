@@ -15,7 +15,7 @@ namespace WebApplication1
             routes.MapRoute(
               name: "MapPath",
               url: "display/{ip}/{port}/{time}",
-              defaults: new { controller = "First", action = "viewMapPath" }
+              defaults: new { controller = "First", action = "ViewMapPath" }
           );
 
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");

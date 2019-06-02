@@ -121,7 +121,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\First\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-    <Content Include="Views\First\viewMapPath.cshtml" />
+    <Content Include="Views\First\ViewMapPath.cshtml" />
     <Content Include="Views\First\Welcome.cshtml" />
     <Content Include="Views\First\Save.cshtml" />
     <Content Include="Views\First\ViewFilePath.cshtml" />
