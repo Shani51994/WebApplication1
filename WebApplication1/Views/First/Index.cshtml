@@ -45,7 +45,7 @@
 
             // get lon and lat values from the view bag and normalize them
             var Lon = (@ViewBag.lon + 180) * (htmlCanvas.width / 360);
-            var Lat = (@ViewBag.lat - 90) * (htmlCanvas.height / -180);
+            var Lat = (@ViewBag.lat + 90) * (htmlCanvas.height / 180);
 
 
             // draw  the circle on the canvas
