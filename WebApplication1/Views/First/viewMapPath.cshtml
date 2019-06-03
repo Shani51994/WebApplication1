@@ -49,7 +49,7 @@
 
         // call getValuesFromXML and pass the return value to done function
        myTimer = (function () {
-            $.post("@Url.Action("createXmlData")").done(function (xml) {
+            $.post("@Url.Action("CreateXmlData")").done(function (xml) {
                 var xmlDoc = $.parseXML(xml);
                 $xml = $(xmlDoc);
                 // search lon and lat values in XML and normalizes them

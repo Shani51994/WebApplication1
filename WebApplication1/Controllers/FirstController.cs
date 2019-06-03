@@ -56,7 +56,7 @@ namespace WebApplication1.Controllers
          * This function deals with creation of XML file with the lon and lat values.
          */
         [HttpPost]
-        public string createXmlData() {
+        public string CreateXmlData() {
             //Initiate XML stuff
             StringBuilder sb = new StringBuilder();
             XmlWriterSettings settings = new XmlWriterSettings();
@@ -99,7 +99,7 @@ namespace WebApplication1.Controllers
         /**
          * This function deals with save the planne's details into a file, and also write them to XML
          */
-        public string saveToFile()
+        public string SaveToFile()
         {
             string result = "";
             
@@ -192,7 +192,7 @@ namespace WebApplication1.Controllers
         /**
          * This function deals with put the lines of the list in an XML, each line every time
          */
-        public string getValuesFromXML()
+        public string GetValuesFromXML()
         {
             if (lineCounter == lines.Count)
             {

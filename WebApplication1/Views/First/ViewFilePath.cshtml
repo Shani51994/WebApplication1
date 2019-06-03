@@ -45,7 +45,7 @@
 
         // call getValuesFromXML and pass the return value to done function 
           myTimer = (function () {
-              $.post("@Url.Action("getValuesFromXML")").done(function (xml) {
+              $.post("@Url.Action("GetValuesFromXML")").done(function (xml) {
                   // when return value of the func is 'nothing' maens that we finished reading the file and alret 'done'
                   if (xml == "nothing") {
                       alert("done!");

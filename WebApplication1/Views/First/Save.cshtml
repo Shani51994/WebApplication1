@@ -42,11 +42,12 @@
         var context = htmlCanvas.getContext("2d");
 
         var IntervalTime = @Session["time"] * 1000
+
         allCircle = [];
 
         // call getValuesFromXML and pass the return value to done function
         myTimer = (function () {
-            $.post("@Url.Action("saveToFile")").done(function (xml) {
+            $.post("@Url.Action("SaveToFile")").done(function (xml) {
                 var xmlDoc = $.parseXML(xml);
                 $xml = $(xmlDoc);
                 // search lon and lat values in XML and normalizes them

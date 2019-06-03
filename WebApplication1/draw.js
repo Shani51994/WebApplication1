@@ -20,7 +20,8 @@ function drawPath(allLocations, myCanvas) {
     myCanvas.beginPath();
     myCanvas.moveTo(allLocations[0].x, allLocations[0].y);
     for (var i = 1; i < allLocations.length; i++) {
-       myCanvas.lineTo(allLocations[i].x, allLocations[i].y);
+        myCanvas.lineTo(allLocations[i].x, allLocations[i].y);
+        myCanvas.lineWidth = '2';
         myCanvas.strokeStyle = "red";
         myCanvas.stroke();
     }
