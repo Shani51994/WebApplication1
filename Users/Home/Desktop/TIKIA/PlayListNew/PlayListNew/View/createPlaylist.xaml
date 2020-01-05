@@ -1,0 +1,88 @@
+﻿<Window x:Class="PlayListNew.View.createPlaylist"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PlayListNew.View"
+        mc:Ignorable="d"
+        Title="createPlaylist" Height="450" Width="800">
+    <Grid  Background="Khaki">
+            <Grid.RowDefinitions>
+                
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Label HorizontalAlignment="Left" Content="Let me now what playlist you want today!" FontSize="30" FontWeight="Bold" Foreground="IndianRed" Padding="10"/>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="0" Height="50">
+                <TextBlock FontSize="15" Foreground="IndianRed" FontWeight="Bold"  VerticalAlignment="Bottom" Margin="0 0 50 0"><Run Text="Tempo"/><Run FlowDirection="RightToLeft" Text=" "/><Run Text="range: (0 to 262)"/></TextBlock>
+                <TextBox x:Name="tempoMin" Text="0" Width="80" Height="30" FontSize="15" HorizontalContentAlignment="Center" VerticalAlignment="Bottom" />
+                <TextBlock FontSize="25" VerticalAlignment="Bottom" Text="-" Margin="15 0 0 0"/>
+                <TextBox x:Name="tempoMax" Text="262" Width="80" Height="30" FontSize="15" HorizontalContentAlignment="Center" VerticalAlignment="Bottom"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="0" Height="50">
+                <TextBlock FontSize="15" Foreground="IndianRed" FontWeight="Bold"  VerticalAlignment="Bottom" Text="Loudness range: (-52 to 1)" Margin="0 0 50 0"/>
+                <TextBox x:Name="loudnessMin" Text="-52" Width="80" Height="30" FontSize="15" HorizontalContentAlignment="Center" VerticalAlignment="Bottom" />
+                <TextBlock FontSize="25" VerticalAlignment="Bottom" Text="-" Margin="15 0 0 0"/>
+                <TextBox x:Name="loudnessMax" Text="1" Width="80" Height="30" FontSize="15" HorizontalContentAlignment="Center" VerticalAlignment="Bottom"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="2">
+                <TextBlock Text="popularity:" Padding="3" FontSize="15" Foreground="IndianRed" FontWeight="Bold" Margin="0,0,25,0"></TextBlock>
+                <Slider x:Name="slider1" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="6" Height="19" Width="232"/>
+                <CheckBox x:Name="dontCarePop" Content="I don't care" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15 0 0 0"/>
+
+        </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="7" Height="50">
+                <TextBlock FontSize="15" Foreground="IndianRed" FontWeight="Bold"  VerticalAlignment="Center" Text="Decade:" Margin="0 0 50 0"/>
+                <CheckBox x:Name="checkBox1" Content="70s" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15 0 0 0"/>
+                <CheckBox x:Name="checkBox2" Content="80s" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15 0 0 0"/>
+                <CheckBox x:Name="checkBox3" Content="90s" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15 0 0 0"/>
+                <CheckBox x:Name="checkBox4" Content="00s" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15 0 0 0"/>
+                <CheckBox x:Name="dontCareDec" Content="I don't care" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15 0 0 0"/>
+
+
+        </StackPanel>
+
+
+            <StackPanel Orientation="Horizontal" Grid.Row="8" Height="50">
+                <TextBlock FontSize="15" Foreground="IndianRed" FontWeight="Bold"  VerticalAlignment="Center" Text="Song duration" Margin="0 0 50 0"/>
+                <CheckBox x:Name="checkBox5" Content="1sec" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15 0 0 0"/>
+                <CheckBox x:Name="checkBox6" Content="2sec" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15 0 0 0"/>
+                <CheckBox x:Name="checkBox7" Content="3sec" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15 0 0 0"/>
+                <CheckBox x:Name="checkBox8" Content="4sec" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15 0 0 0"/>
+          
+        </StackPanel>
+
+
+            <StackPanel Orientation="Horizontal" Grid.Row="9">
+                <TextBlock Text="num of songs you want: (max 30 songs):" Padding="3" Margin="3" Grid.Column="0" FontSize="15" Foreground="IndianRed" FontWeight="Bold"></TextBlock>
+                <TextBox Name="ipTxt"  Margin="3" FontSize="13"  Width="60" Text="{Binding FlightServerIP, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            </StackPanel>
+
+            <WrapPanel Grid.Row="11" Grid.Column="0" HorizontalAlignment="Center" Height="80" >
+                <StackPanel>
+                    <TextBox x:Name="name" Text="playlist name" Width="150" Height="30" FontSize="15" HorizontalContentAlignment="Center" VerticalAlignment="Bottom" />
+                    <Button Name="okBtn" Padding="3" HorizontalAlignment="Stretch"
+                Foreground="DarkMagenta" Height="30" Width="50" Margin="10" Command="{Binding ClickCommand}">create</Button>
+                </StackPanel>
+                <Button Name="CancelNBtn" Padding="3" HorizontalAlignment="Stretch"
+                 Height="30" Width="50" Margin="10" Foreground="DarkMagenta" Command="{Binding CancelCommand}">Cancel</Button>
+            </WrapPanel>
+
+    </Grid>
+</Window>
